@@ -28,18 +28,7 @@ $(document).on("click", "#btnSave", function(event)
 	}
 
 	//If valid
-	var products = getProductCard(
-		$("#name").val().trim(),
-		$("#category").val().trim(),
-		$("#Description").val().trim(),
-		$("#price").val().trim(),
-		$("#quality").val().trim(),
-		$("#status").val());
-	
-		$("#colProducts").append(products);
-		$("#alertSuccess").text("Saved successfully.");
-		$("#alertSuccess").show();
-		$("#formProducts")[0].reset();
+	$("#formProducts").submit();
 });
 
 function validateItemForm()

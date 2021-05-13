@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@page import = "Util.DBConnection"%>
+<%@page import = "com.Products"%>
 <%@page import = "java.sql.*"%>
 
 
@@ -45,7 +46,56 @@
            <br>
 
 <body>
+		<%
+			//Initialize---------------------------
+			session.setAttribute("statusMsg","");
+			System.out.println("Trying to process...");
 			
+			//Save---------------------------------
+			if (request.getParameter("name") != null)
+			{
+				Products ProObj = new Products();
+				String stsMsg = "";
+				
+				//Insert--------------------------
+				if (request.getParameter("hidItemIDSave") == "")
+				{
+					stsMsg = ProObj.insertItem(
+						request.getParameter("name"),
+						request.getParameter("category"),
+						request.getParameter("Description"),
+						request.getParameter("price"),
+						request.getParameter("quantity"),
+						request.getParameter("status"));
+				}
+				
+				else//Update----------------------
+				{
+					stsMsg = ProObj.updateProduct(
+						request.getParameter("hidItemIDSave"),
+						request.getParameter("name"),
+						request.getParameter("category"),
+						request.getParameter("Description"),
+						request.getParameter("price"),
+						request.getParameter("quantity"),
+						request.getParameter("status"));
+				}
+				
+				session.setAttribute("statusMsg", stsMsg);
+				}
+			
+				//Delete-----------------------------
+				if (request.getParameter("hidItemIDDelete") != null)
+				{
+					Products ProObj = new Products();
+					String stsMsg =
+					ProObj.deleteProduct(request.getParameter("hidItemIDDelete"));
+					session.setAttribute("statusMsg", stsMsg);
+			}
+			
+		
+		
+		%>	
 					    
 		<%--Get id and display the interface --%>
 		<%
@@ -83,24 +133,37 @@
   				</div>
 			</div>
 			<br><br>
-			Item Name<br> <input type ="text" name = "name" id="name" placeholder = "Enter the item name.." ><br><br>
-			Item Category<br> <input type ="text" name = "category" id="category" placeholder = "Enter the item category.." ><br><br>
-			Item Description<br> <input type ="text" name = "Description" id="Description" placeholder = "Enter the item description.." ><br><br>
-			Item Price<br> <input type ="text" name = "price" id="price" placeholder = "Enter the item price.." ><br><br>
-			Quantity<br> <input type ="text" name = "quantity" id="quantity" placeholder = "Enter the quantity of the item.." ><br><br>
-			Item Activation<br> <select  name = "status" id="status" >
+			Item Name<br> <input type ="text" name = "name" id="name" placeholder = "Enter the item name.." required><br><br>
+			Item Category<br> <input type ="text" name = "category" id="category" placeholder = "Enter the item category.." required><br><br>
+			Item Description<br> <input type ="text" name = "Description" id="Description" placeholder = "Enter the item description.." required><br><br>
+			Item Price<br> <input type ="text" name = "price" id="price" placeholder = "Enter the item price.." required><br><br>
+			Quantity<br> <input type ="text" name = "quantity" id="quantity" placeholder = "Enter the quantity of the item.." required><br><br>
+			Item Activation<br> <select  name = "status" id="status" required>
 							<option value = "">  </option>
 							<option value = "Yes"> Yes </option>
 							<option value = "No"> No </option>
 							</select><br><br>
-			<input type="hidden" id="hidItemIDSave" name="hidItemIDSave" value="">				
-			<div id="alertSuccess" class="alert alert-success"></div>
+					
+		
+			<button class="button1" id="btnSave"><span>Add Details </span></button>
+			<input type="hidden" id="hidItemIDSave" name="hidItemIDSave" value="">			    
+		</form>
+			</div>
+			<div id="alertSuccess" class="alert alert-success">
+				<%
+					out.print(session.getAttribute("statusMsg"));
+				%>
+			</div>
+			
 			<div id="alertError" class="alert alert-danger"></div>
 			
-			<button class="button1" id="btnSave"><span>Add Details </span></button>
-				    
-		</form>
-		</div>
+			<br>
+			<%
+				Products proObj = new Products();
+				out.print(proObj.readItems());
+			%>
+			
+	
 		
 		<br>
 		<div class="row">

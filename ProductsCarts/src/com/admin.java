@@ -1,23 +1,25 @@
-package model;
+package com;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import model.Products;
+import com.Products;
 
+import com.addProduct;
 
-public class addProduct {
+public class admin {
 	
 	private Connection connect()
 	 {
 		 Connection con = null;
 		 try
 		 {
-			 Class.forName("com.mysql.cj.jdbc.Driver");
-				
-			 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectmanagement?useTimezone=true&serverTimezone=UTC", "root", "");
+		 Class.forName("com.mysql.jdbc.Driver");
+		
+		 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectmanagement", "root", "");
 
 		 }
 		 catch (Exception e)
@@ -26,54 +28,9 @@ public class addProduct {
 		 return con;
 	 }
 
-	public String insertItem(String ID,String name, String category, String Description, String quantity,String price, String status)
-	 {
-		 String output = "";
-			 try
-			 {
-			 Connection con = connect();
-				 if (con == null)
-				 {
-					 return "Error while connecting to the database for inserting."; 
-				 }
-			
-			
-			 
-				 // create a prepared statement
-				 String query = " insert into products(`ID`,`name`,`category`,`Description`,`quantity`,`price`,`status`)"
-						 + " values (?, ?, ?, ?, ?,? , ?)";
-				 
-						 PreparedStatement preparedStmt = con.prepareStatement(query);
-						
-						 // binding values
-						 preparedStmt.setInt(1, 0);
-						 preparedStmt.setString(2, name);
-						 preparedStmt.setString(3, category);
-						 preparedStmt.setString(4, Description);
-						 preparedStmt.setDouble(5, Integer.parseInt(quantity));
-						 preparedStmt.setDouble(6, Double.parseDouble(price));
-						 preparedStmt.setString(7, status);
-						
-						 // execute the statement
-						 preparedStmt.execute();
-						 con.close();
-						 output = "Inserted successfully";
-				 }
-			 
-			 
-				  catch (Exception e)
-				 {
-						 output = "Error while inserting the item.";
-						 System.err.println(e.getMessage());
-				 }
-						
-			     return output;
-			 }
 	
 	
-	
-	
-	public String readForm()
+	 public String readItems()
 	 {
 		
 		 String output = "";
@@ -82,10 +39,12 @@ public class addProduct {
 		 {
 			Connection con = connect();
 			
+				
 			if (con == null) 
 			{return "Error while connecting to the database for reading."; }
-			
-			output ="<html>\r\n" + 
+
+			// Prepare the html table to be displayed
+			 output = "<html>\r\n" + 
 			 		"<head>\r\n" + 
 			 		"<link rel=\"stylesheet\" href=\"../css/homee-style.css\">\r\n" + 
 			 		"<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\">\r\n" + 
@@ -144,13 +103,13 @@ public class addProduct {
 			 		"    <div class=\"topnav sticky\">\r\n" + 
 			 		"    \r\n" + 
 			 		"         \r\n" + 
-			 		"           <br> <center></center>\r\n" + 
-			 		"            <li><a  href=\"../../../Products/addProductService/addProduct\">Add New Product <i class='fas fa-plus-square'></i></a></li>\r\n" + 
+			 		"          <br>  <center></center>\r\n" + 
+			 		"            <li><a href=\"../../../Products/addProductService/addProduct\">Add New Product <i class='fas fa-plus-square'></i></a></li>\r\n" + 
 			 		"            <li><a href=\"../../../Products/ProductsService/Products\">All Products & Edit Products <i class='fab fa-elementor'></i></a>\r\n" + 
-			 		"            <li><a href=\"../../../Products/AdminMessageViewService/MessageView\">Messages Received <i class='fas fa-comment-alt'></i></a></li>\r\n" + 
-			 		"            <li><a href=\"../../../Products/AdminCheckService/checkbill\">Orders Received <i class=\"fas fa-archive\"></i></a></li>\r\n" + 
-			 		"            <li> <a href=\"../../../Products/CanceledOrdersViewService/CanceledView\">Cancel Orders <i class='fas fa-window-close'></i></a></li>\r\n" + 
-			 		"            <li> <a href=\"../../../Products/DeliveredOrdersViewService/DeliveredView\">Delivered Orders <i class='fas fa-dolly'></i></a></li>\r\n" + 
+			 		"            <li><a href=\"messagesReceived.jsp\">Messages Received <i class='fas fa-comment-alt'></i></a></li>\r\n" + 
+			 		"            <li><a href=\"ordersReceived.jsp\">Orders Received <i class=\"fas fa-archive\"></i></a></li>\r\n" + 
+			 		"            <li><a href=\"cancelOrders.jsp\">Cancel Orders <i class='fas fa-window-close'></i></a></li>\r\n" + 
+			 		"            <li><a href=\"deliveredOrders.jsp\">Delivered Orders <i class='fas fa-dolly'></i></a></li>\r\n" + 
 			 		"  \r\n" + 
 			 		"          </div>\r\n" + 
 			 		"                    \r\n" + 
@@ -164,40 +123,10 @@ public class addProduct {
 			 		"               \r\n" + 
 			 		"             </div>\r\n" + 
 			 		"            </div>\r\n" + 
-			 		"           <br>\r\n" + 
-			 		"\r\n" + 
-			 		"<body>\r\n" + 
-			 		"	\r\n" +  
-			 		"			    \r\n" + 
-			 		"\r\n" + 
-			 		"		<center><div class=\"div1\">\r\n" + 
-			 		"		<form action='../../../Products/addProductService/addProduct/AddProduct'  method= \"post\"><br><b>\r\n" + 
-			 		"			<div class=\"card\">\r\n" + 
-			 		" 				 <img src=\"dd.png\"  style=\"width:50%\">\r\n" + 
-			 		"  					<div class=\"container\">\r\n" + 
-			 		"  				</div>\r\n" + 
-			 		"			</div>\r\n" + 
-			 		"			<br><br>\r\n" +
-			 		"			<input type=\"hidden\" name=\"ID\">" +
-			 		"			Item Name<br> <input type =\"text\" name = \"name\" placeholder = \"Enter the item name..\" required><br><br>\r\n" + 
-			 		"			Item Category<br> <input type =\"text\" name = \"category\" placeholder = \"Enter the item category..\" required><br><br>\r\n" + 
-			 		"			Item Description<br> <input type =\"text\" name = \"Description\" placeholder = \"Enter the item description..\" required><br><br>\r\n" + 
-			 		"			Quantity<br> <input type =\"text\" name = \"quantity\" placeholder = \"Enter the item quantity..\" required><br><br>\r\n" + 
-			 		"			Item Price<br> <input type =\"text\" name = \"price\" placeholder = \"Enter the price of the item..\" required><br><br>\r\n" + 
-			 		"			Item Activation<br> <select  name = \"status\" required>\r\n" + 
-			 		"							<option value = \"\">  </option>\r\n" + 
-			 		"							<option value = \"Yes\"> Yes </option>\r\n" + 
-			 		"							<option value = \"No\"> No </option>\r\n" + 
-			 		"							</select><br><br>\r\n" + 
-			 		"			<button class=\"button1\"><span>Add Details </span></button>\r\n" + 
-			 		"				    \r\n" + 
-			 		"		</form>\r\n" + 
-			 		"		</div></center>\r\n" + 
-			 		"		\r\n" + 
-			 		"</body>\r\n" + 
-			 		"</html>"; 
-			
-			 
+			 		"           <br><script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\" integrity=\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN\" crossorigin=\"anonymous\"></script>\r\n" + 
+			 		"	<script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\" integrity=\"sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q\" crossorigin=\"anonymous\"></script>\r\n" + 
+			 		"	<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js\" integrity=\"sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl\" crossorigin=\"anonymous\"></script>\r\n" + 
+			 		"<!-- bootstrap -->";
 			 // Complete the html table
 			 	output += "</table><br><br><footer class=\"page-footer font-small color-dark\" style=\"background-color:#1f3a93\">\r\n" + 
 			 			"\r\n" + 
@@ -328,10 +257,9 @@ public class addProduct {
 			 			"\r\n" + 
 			 			"</body>\r\n" + 
 			 			"</html>";
-			
-			
-			
-		 }
+		
+ 
+	 }
 		 catch (Exception e)
 		 {
 			 output = "Error while reading the items.";
@@ -341,5 +269,5 @@ public class addProduct {
 		 return output;
 		 
 	 }
-	
+
 }
