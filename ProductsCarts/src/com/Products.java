@@ -23,7 +23,7 @@ public class Products {
 }
 		 return con;
 	 }
-	public String insertItem(String name, String category, String Description, String quantity,String price, String status)
+	public String insertItem(String name, String category, String Description, String price,String quantity, String status)
 	 {
 		 String output = "";
 			 try
@@ -37,7 +37,7 @@ public class Products {
 			
 			 
 				 // create a prepared statement
-				 String query = " insert into products(`ID`, `name`, `category`, `Description`, `quantity`, `price`, `status`)" 
+				 String query = " insert into products(`ID`, `name`, `category`, `Description`,  `price`,`quantity`, `status`)" 
 				 + " values (?, ?, ?, ?, ?, ?, ?)";
 				 
 						 PreparedStatement preparedStmt = con.prepareStatement(query);
@@ -47,21 +47,23 @@ public class Products {
 						 preparedStmt.setString(2, name);
 						 preparedStmt.setString(3, category);
 						 preparedStmt.setString(4, Description);
-						 preparedStmt.setDouble(5, Integer.parseInt(quantity));
-						 preparedStmt.setDouble(6, Double.parseDouble(price));
+						 preparedStmt.setDouble(5, Double.parseDouble(price));
+						 preparedStmt.setInt(6, Integer.parseInt(quantity));
 						 preparedStmt.setString(7, status);
 						
 						 // execute the statement
 						 preparedStmt.execute();
 						 con.close();
-						 output = "Inserted successfully";
+						 String newProducts = readItems();
+						 output = "{\"status\":\"success\", \"data\": \"" +
+								 newProducts + "\"}";
 				 }
 			 
 			 
 				  catch (Exception e)
 				 {
-						 output = "Error while inserting the item.";
-						 System.err.println(e.getMessage());
+					  output = "{\"status\":\"error\", \"data\":\"Error while inserting the item.\"}";
+							  System.err.println(e.getMessage());
 				 }
 						
 			     return output;
@@ -86,7 +88,7 @@ public class Products {
 					// Prepare the html table to be displayed
 					output = "<table border='1'><tr><th>Name</th><th>Category</th>" +
 					"<th>Description</th>" +
-					"<th>Price</th>" +
+					"<th>Price RS.</th>" +
 					"<th>Quantity</th>" +
 					"<th>Status</th>" +
 					"<th>Update</th><th>Remove</th></tr>";
@@ -103,8 +105,8 @@ public class Products {
 						 String name = rs.getString("name");
 						 String category = rs.getString("category");
 						 String Description = rs.getString("Description");
-						 String quantity = Integer.toString(rs.getInt("quantity"));
 						 String price = Double.toString(rs.getDouble("price"));
+						 String quantity = Integer.toString(rs.getInt("quantity"));
 						 String status = rs.getString("status");
 
 						 // Add into the html table
@@ -112,8 +114,8 @@ public class Products {
 						 + name + "</td>";
 						 output += "<td>" + category + "</td>";
 						 output += "<td>" + Description + "</td>";
-						 output += "<td>" + quantity + "</td>";
 						 output += "<td>" + price + "</td>";
+						 output += "<td>" + quantity + "</td>";
 						 output += "<td>" + status + "</td>";
 					
 			
@@ -164,21 +166,23 @@ public class Products {
 					 preparedStmt.setString(2, name);
 					 preparedStmt.setString(3, category);
 					 preparedStmt.setString(4, Description);
-					 preparedStmt.setInt(5, Integer.parseInt(quantity));
-					 preparedStmt.setDouble(6, Double.parseDouble(price));
+					 preparedStmt.setDouble(5, Double.parseDouble(price));
+					 preparedStmt.setInt(6, Integer.parseInt(quantity));
 					 preparedStmt.setString(7, status);
 							
 					 // execute the statement
 					 preparedStmt.execute();
 					 con.close();
 							
-					 output = "Updated successfully";
+					 String newProducts = readItems();
+					 output = "{\"status\":\"success\", \"data\": \"" +
+							 newProducts + "\"}";
 				 }
 							 
 				 catch (Exception e)	
 				 {
-					 output = "Error while updating the item.";
-					 System.err.println(e.getMessage());
+					 output = "{\"status\":\"error\", \"data\":\"Error while deleting the item.\"}";
+							 System.err.println(e.getMessage());
 				 }
 							
 				 return output;

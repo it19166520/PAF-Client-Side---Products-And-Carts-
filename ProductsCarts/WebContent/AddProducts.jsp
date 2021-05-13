@@ -144,11 +144,6 @@
 							<option value = "No"> No </option>
 							</select><br><br>
 					
-		
-			<button class="button1" id="btnSave"><span>Add Details </span></button>
-			<input type="hidden" id="hidItemIDSave" name="hidItemIDSave" value="">			    
-		</form>
-			</div>
 			<div id="alertSuccess" class="alert alert-success">
 				<%
 					out.print(session.getAttribute("statusMsg"));
@@ -156,6 +151,12 @@
 			</div>
 			
 			<div id="alertError" class="alert alert-danger"></div>
+			
+			<button class="button1" id="btnSave"><span>Add Details </span></button>
+			<input type="hidden" id="hidItemIDSave" name="hidItemIDSave" value="">			    
+		</form>
+			</div>
+		
 			
 			<br>
 			<%

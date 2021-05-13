@@ -12,7 +12,7 @@ $(document).ready(function()
 $(document).on("click", "#btnSave", function(event)
 {
 	//clear status messages-----
-	$("#alertSuccess").text();
+	$("#alertSuccess").text("");
 	$("#alertSuccess").hide();
 	$("#alertError").text();
 	$("#alertError").hide();
@@ -31,6 +31,21 @@ $(document).on("click", "#btnSave", function(event)
 	$("#formProducts").submit();
 });
 
+
+//UPDATE==========================================
+$(document).on("click", ".btnUpdate", function(event)
+{
+	$("#hidItemIDSave").val($(this).closest("tr").find('#hidItemIDUpdate').val());
+	$("#name").val($(this).closest("tr").find('td:eq(0)').text());
+	$("#category").val($(this).closest("tr").find('td:eq(1)').text());
+	$("#Description").val($(this).closest("tr").find('td:eq(2)').text());
+	$("#price").val($(this).closest("tr").find('td:eq(3)').text());
+	$("#quantity").val($(this).closest("tr").find('td:eq(4)').text());
+	$("#status").val($(this).closest("tr").find('td:eq(5)').text());
+
+	});
+
+//validate The Form
 function validateItemForm()
 {
 	//Validations
@@ -58,10 +73,24 @@ function validateItemForm()
 	return "*Insert product price.!";
 	}
 	
+	// is numerical value of price
+	var tmpPrice = $("#price").val().trim();
+	if (!$.isNumeric(tmpPrice))
+	{
+		return "*Insert a numerical value for Product Price.";
+	}
+
 	// Product quantity
 	if ($("#quantity").val().trim() == "")
 	{
 	return "*Insert product quantity.!";
+	}
+	
+	// is numerical value 
+	var tmpQuan = $("#quantity").val().trim();
+	if (!$.isNumeric(tmpQuan))
+	{
+		return "*Insert a numerical value for Product Quantity.!";
 	}
 	
 	// Product activation
