@@ -86,11 +86,11 @@ public class Products {
 	
 					// Prepare the html table to be displayed
 					// Prepare the html table to be displayed
-					output = "<table border='1'><tr><th>Name</th><th>Category</th>" +
-					"<th>Description</th>" +
-					"<th>Price RS.</th>" +
-					"<th>Quantity</th>" +
-					"<th>Status</th>" +
+					output = "<table id=\"customers\" border='1'><tr><th>Name</th><th>Category</th>" +
+					"<th>Description</th>"+
+					"<th>Price RS.</th>"+
+					"<th>Quantity</th>"+
+					"<th>Status</th>"+
 					"<th>Update</th><th>Remove</th></tr>";
 					
 					 String query = "select * from products";
@@ -156,7 +156,7 @@ public class Products {
 							
 					 // create a prepared statement
 							
-					 String query = "UPDATE products SET name=?,category=?,Description=?,quantity=?,price=?,status=? WHERE ID=?";
+					 String query = "UPDATE products SET name=?,category=?,Description=?,price=?,quantity=?,status=? WHERE ID=?";
 					 PreparedStatement preparedStmt = con.prepareStatement(query);
 							
 					 // binding values
@@ -207,8 +207,7 @@ public class Products {
 					 con.close();
 					 
 					 String newProducts = readItems();
-					 output = "{\"status\":\"success\", \"data\": \"" +
-							 newProducts + "\"}";
+					 output = "{\"status\":\"success\", \"data\": \"" +newProducts + "\"}";
 				 }
 						
 				 catch (Exception e)

@@ -75,7 +75,10 @@
 		
 		<%--Create form to add products --%>		    
 
-		<center><div class="div1">
+		<center>
+		<h4>Add New Product <i class='fas fa-plus-square'></i></h4>
+		<br>
+		<div class="div1">
 		<form id="formProducts" name="formProducts" ><br><b>
 			<div class="card">
  			
@@ -96,18 +99,19 @@
 							</select><br><br>
 					
 			
-	
-			<input id="btnSave" name="btnSave" class="button1" type="button" value="Save" ></span>
-			<input type="hidden" id="hidItemIDSave" name="hidItemIDSave" value="">			    
-		</form>
-		
-			<div id="alertSuccess" class="alert alert-success">
+			<button id="btnSave" name="btnSave" class="button1"><span>Add Details </span></button>
+			
+				<div id="alertError" class="alert alert-danger"></div>    
+			<input type="hidden" id="hidItemIDSave" name="hidItemIDSave" value="">	
 				
 			</div>
 			
-			<div id="alertError" class="alert alert-danger"></div>
-			</div>
+		</form>
+		
+		
+			<div id="alertSuccess" class="alert alert-success"></div>	
 			
+		
 			<br><br><br>
 			<h3><b>All Products & Edit Products <i class='fab fa-elementor'></i></h3>
 			
