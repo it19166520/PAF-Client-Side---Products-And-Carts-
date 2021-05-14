@@ -110,23 +110,21 @@ public class Products {
 						 String status = rs.getString("status");
 
 						 // Add into the html table
-						 output += "<tr><td><input id='hidItemIDUpdate' name='hidItemIDUpdate' type='hidden' value='" + ID + "'>"
-						 + name + "</td>";
+						 output += "<tr><td><input id='hidItemIDUpdate' name='hidItemIDUpdate' type='hidden' value='" + ID
+								 + "'>" + name + "</td>";
 						 output += "<td>" + category + "</td>";
 						 output += "<td>" + Description + "</td>";
 						 output += "<td>" + price + "</td>";
 						 output += "<td>" + quantity + "</td>";
 						 output += "<td>" + status + "</td>";
 					
-			
+						
 						 // buttons
-						 output += "<td><input name='btnUpdate'type='button' value='Update' class=' btnUpdate btn btn-secondary'></td>"
-						 		+ " <td><form method='post' action='AddProducts.jsp'>"
-						 		+ " <input name='btnRemove' type='submit'"
-						 		+ "	 value='Remove' class='btn btn-danger'>"
-						 		+ " <input name='hidItemIDDelete' type='hidden'"
-						 		+ " value='" + ID + "'>" + "</form></td></tr>";
+						 output += "<td><input name='btnUpdate' type='button' value='Update' class='btnUpdate btn btn-secondary' data-pid='" + ID + "'></td>"
+								 + "<td><input name='btnRemove' type='button' value='Remove' class='btnRemove btn btn-danger' data-pid='"+ ID + "'></td></tr>";
 						 }
+					 
+
 						 con.close();
 						 
 						 // Complete the html table
@@ -162,14 +160,13 @@ public class Products {
 					 PreparedStatement preparedStmt = con.prepareStatement(query);
 							
 					 // binding values
-					 preparedStmt.setInt(1, Integer.parseInt(ID));
-					 preparedStmt.setString(2, name);
-					 preparedStmt.setString(3, category);
-					 preparedStmt.setString(4, Description);
-					 preparedStmt.setDouble(5, Double.parseDouble(price));
-					 preparedStmt.setInt(6, Integer.parseInt(quantity));
-					 preparedStmt.setString(7, status);
-							
+					 preparedStmt.setString(1, name);
+					 preparedStmt.setString(2, category);
+					 preparedStmt.setString(3, Description);
+					 preparedStmt.setDouble(4, Double.parseDouble(price));
+					 preparedStmt.setInt(5, Integer.parseInt(quantity));
+					 preparedStmt.setString(6, status);
+					 preparedStmt.setInt(7, Integer.parseInt(ID));		
 					 // execute the statement
 					 preparedStmt.execute();
 					 con.close();
@@ -181,7 +178,7 @@ public class Products {
 							 
 				 catch (Exception e)	
 				 {
-					 output = "{\"status\":\"error\", \"data\":\"Error while deleting the item.\"}";
+					 output = "{\"status\":\"error\", \"data\":\"Error while Updating the item.\"}";
 							 System.err.println(e.getMessage());
 				 }
 							
@@ -208,12 +205,15 @@ public class Products {
 					 // execute the statement
 					 preparedStmt.execute();
 					 con.close();
-					 output = "Deleted successfully";
+					 
+					 String newProducts = readItems();
+					 output = "{\"status\":\"success\", \"data\": \"" +
+							 newProducts + "\"}";
 				 }
 						
 				 catch (Exception e)
 				 {
-					 output = "Error while deleting the item.";
+					 output = "{\"status\":\"error\", \"data\":\"Error while deleting the item.\"}";					 
 					 System.err.println(e.getMessage());
 				 }
 				 return output;

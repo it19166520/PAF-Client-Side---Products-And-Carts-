@@ -46,56 +46,7 @@
            <br>
 
 <body>
-		<%
-			//Initialize---------------------------
-			session.setAttribute("statusMsg","");
-			System.out.println("Trying to process...");
-			
-			//Save---------------------------------
-			if (request.getParameter("name") != null)
-			{
-				Products ProObj = new Products();
-				String stsMsg = "";
-				
-				//Insert--------------------------
-				if (request.getParameter("hidItemIDSave") == "")
-				{
-					stsMsg = ProObj.insertItem(
-						request.getParameter("name"),
-						request.getParameter("category"),
-						request.getParameter("Description"),
-						request.getParameter("price"),
-						request.getParameter("quantity"),
-						request.getParameter("status"));
-				}
-				
-				else//Update----------------------
-				{
-					stsMsg = ProObj.updateProduct(
-						request.getParameter("hidItemIDSave"),
-						request.getParameter("name"),
-						request.getParameter("category"),
-						request.getParameter("Description"),
-						request.getParameter("price"),
-						request.getParameter("quantity"),
-						request.getParameter("status"));
-				}
-				
-				session.setAttribute("statusMsg", stsMsg);
-				}
-			
-				//Delete-----------------------------
-				if (request.getParameter("hidItemIDDelete") != null)
-				{
-					Products ProObj = new Products();
-					String stsMsg =
-					ProObj.deleteProduct(request.getParameter("hidItemIDDelete"));
-					session.setAttribute("statusMsg", stsMsg);
-			}
-			
-		
-		
-		%>	
+	
 					    
 		<%--Get id and display the interface --%>
 		<%
@@ -125,7 +76,7 @@
 		<%--Create form to add products --%>		    
 
 		<center><div class="div1">
-		<form id="formProducts" action ="AddProducts.jsp"  method= "post" ><br><b>
+		<form id="formProducts" name="formProducts" ><br><b>
 			<div class="card">
  			
   					<div class="container">
@@ -144,32 +95,32 @@
 							<option value = "No"> No </option>
 							</select><br><br>
 					
+			
+	
+			<input id="btnSave" name="btnSave" class="button1" type="button" value="Save" ></span>
+			<input type="hidden" id="hidItemIDSave" name="hidItemIDSave" value="">			    
+		</form>
+		
 			<div id="alertSuccess" class="alert alert-success">
-				<%
-					out.print(session.getAttribute("statusMsg"));
-				%>
+				
 			</div>
 			
 			<div id="alertError" class="alert alert-danger"></div>
-			
-			<button class="button1" id="btnSave"><span>Add Details </span></button>
-			<input type="hidden" id="hidItemIDSave" name="hidItemIDSave" value="">			    
-		</form>
 			</div>
-		
 			
-			<br>
+			<br><br><br>
+			<h3><b>All Products & Edit Products <i class='fab fa-elementor'></i></h3>
+			
+			<div id="divItemsGrid">
 			<%
 				Products proObj = new Products();
 				out.print(proObj.readItems());
 			%>
 			
-	
+			</div>
 		
 		<br>
-		<div class="row">
-			<div class="col-12" id="colProducts">
-		</div>
-</div>	
+		
+
 </body>
 </html>
